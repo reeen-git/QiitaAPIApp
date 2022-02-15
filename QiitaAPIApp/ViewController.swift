@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         tableView.frame.size = view.frame.size
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight=50
+        tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(QiitaTableViewCell.self, forCellReuseIdentifier: cellId)
         
@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     
     private func getQiitaAPI() {
         //guard letとすることで、取得できなかった場合処理を抜けられる
-        guard let url = URL(string: "https://qiita.com/api/v2/items?page=1&per_page=20") else { return }
+        guard let url = URL(string: "https://qiita.com/api/v2/items?page=1&per_page=50") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -91,6 +91,9 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "Gotokiji", sender: nil)
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
@@ -104,7 +107,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! QiitaTableViewCell
         cell.qiita = qiitas[indexPath.row]
         cell.textLabel?.adjustsFontSizeToFitWidth = true
-        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.numberOfLines = 2
         cell.textLabel?.font = UIFont.systemFont(ofSize: 5)
         return cell
     }
